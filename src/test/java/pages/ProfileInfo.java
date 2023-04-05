@@ -1,5 +1,7 @@
 package pages;
 
+
+import com.codeborne.selenide.Condition;
 import test.stepik.TestBase;
 
 import static com.codeborne.selenide.Selectors.byText;
@@ -17,7 +19,7 @@ public class ProfileInfo  extends TestBase{
         return this;
     }
 
-    public ProfileInfo setLanguage (String value){
+    public ProfileInfo setLanguage(String value){
         $("#supported_languages").selectOption("English");
         return this;
     }
@@ -27,8 +29,15 @@ public class ProfileInfo  extends TestBase{
         return this;
     }
 
-    public ProfileInfo submitPage (){
+    public ProfileInfo submitProfileInfo(){
         $(byText("Save changes")).click();
+        return this;
+    }
+
+    public ProfileInfo confirmChanges(){
+        if ($(" .modal-dialog-inner").is(Condition.visible)) {
+            $(" .$( .modal-dialog-confirm__buttons").$(byText("Save")).click();
+        }
         return this;
     }
 }

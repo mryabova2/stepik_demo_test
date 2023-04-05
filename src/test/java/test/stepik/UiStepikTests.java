@@ -8,7 +8,7 @@ import pages.ProfileMenu;
 import pages.LoginForm;
 
 import static com.codeborne.selenide.CollectionCondition.*;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
@@ -19,15 +19,20 @@ public class UiStepikTests extends TestBase {
     ProfileMenu profileMenu = new ProfileMenu();
     Catalog catalog = new Catalog();
 
+
     @Test
     @DisplayName("Search course by key word and check output")
     void simpleSearchTest() {
-        catalog
-                .openCatalog()
-                .setSearchValue("Java");
+        step("Open catalog", () ->
+                catalog.openCatalog());
 
-        $$(Catalog.allCorsesLinks).shouldHave(size(8));
-        $$(Catalog.allCorsesLinks).filterBy(text("Java")).shouldHave(size(8));
+        step("Input search key-word", () ->
+                catalog.setSearchValue("Java"));
+
+        step("Check search results", () -> {
+            int totalCoursesFound = $$(Catalog.coursesFound).size();
+            $$(Catalog.coursesFound).filterBy(text("Java")).shouldHave(size(totalCoursesFound));
+        });
     }
 
     @Test
@@ -41,9 +46,9 @@ public class UiStepikTests extends TestBase {
                     .submitLoginForm();
         });
 
-        step("Go to profile info blank", () ->
-                profileMenu
-                        .goToSettings());
+        step("Go to profile info blank", () -> {
+                    profileMenu.goToSettings();
+                });
 
         step("Update profile info", () -> {
             profileInfo
@@ -51,12 +56,12 @@ public class UiStepikTests extends TestBase {
                     .setLastName(lastName)
                     .setLanguage("English")
                     .uploadPicture("testImage.jpg")
-                    .submitPage();
+                    .submitProfileInfo()
+                    .confirmChanges();
         });
 
         step("Check updated profile info", () -> {
-            profileMenu
-                    .goToProfile();
+            profileMenu.goToProfile();
             $(ProfileMenu.profileHeader).shouldHave(text(firstName + " " + lastName));
         });
     }

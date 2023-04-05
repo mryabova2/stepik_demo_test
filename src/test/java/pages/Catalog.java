@@ -1,11 +1,11 @@
 package pages;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.*;
 
 public class Catalog {
 
-    public static String allCorsesLinks = ".course-card__title[href]";
+    public static String coursesFound = "[data-view=search-item]";
 
     public Catalog openCatalog(){
         open("");
@@ -14,6 +14,11 @@ public class Catalog {
 
     public Catalog setSearchValue(String value){
         $(".search-form__input").setValue(value).pressEnter();
+        return this;
+    }
+
+    public Catalog checkLoaded (){
+        $(coursesFound).shouldBe(visible);
         return this;
     }
 }

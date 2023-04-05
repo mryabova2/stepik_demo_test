@@ -1,14 +1,19 @@
 package test.stepik;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.javafaker.Faker;
 import config.AuthConfig;
 import config.WebDriverConfig;
+import io.qameta.allure.Allure;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.aeonbits.owner.ConfigFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class TestBase {
@@ -40,8 +45,8 @@ public class TestBase {
         }
     }
 
-    @BeforeAll
-    static void configBaseUrl() {
+    @BeforeEach
+    void configBaseUrl() {
         Configuration.baseUrl = stepikUrl;
     }
 
@@ -50,4 +55,13 @@ public class TestBase {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
+    @AfterEach
+    void configAllureAttachments(){
+        Allure.getLifecycle().addAttachment(
+                "Page Source",
+                "text/html",
+                "html",
+                WebDriverRunner.getWebDriver().getPageSource().getBytes(StandardCharsets.UTF_8)
+        );
+    }
 }
