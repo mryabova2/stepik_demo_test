@@ -17,6 +17,14 @@ public class ApiSpecs extends TestBase {
                     .contentType("application/json; charset=UTF-8")
                     .header("referer", stepikUrl + "/");
 
+    public static RequestSpecification cookiesRequest =
+            with()
+                    .baseUri(stepikUrl)
+                    .basePath("/api")
+                    .log().all()
+                    .contentType("application/json; charset=UTF-8")
+                    .header("referer", stepikUrl + "/");
+
     public static ResponseSpecification okResponse = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .build();

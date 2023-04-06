@@ -1,10 +1,13 @@
 package test.stepik;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static test.stepik.ApiSpecs.*;
@@ -14,20 +17,24 @@ public class ApiStepikTests extends TestBase {
 
 
     @Test
-    @DisplayName("Authorization without password")
+    @Feature("API")
+    @DisplayName("Authorization with wrong password")
     void wrongPasswordAuth() {
+        String wrongPassword = "12345";
+        Allure.parameter("Password", wrongPassword);
+
         Map<String, String> preAuthCookies =
                 given()
-                        .spec(basicRequest)
+                        .spec(cookiesRequest)
                         .when()
                         .get(loginUrl)
                         .then()
                         .log().all()
                         .extract().cookies();
 
-        given()
+        step("Send body with correct cookies and wrong password", () ->    given()
                 .spec(basicRequest)
-                .body("")
+                .body(Map.of("email", config.getEmail(), "password", wrongPassword))
                 .cookies(preAuthCookies)
                 .header("x-csrftoken", preAuthCookies.get("csrftoken"))
                 .when()
@@ -35,22 +42,24 @@ public class ApiStepikTests extends TestBase {
                 .then()
                 .spec(noAuthResponse)
                 .log().all()
-                .body(containsString(wrongAuthText));
+                .body(containsString(wrongAuthText)));
     }
 
     @Test
+    @Feature("API")
     @DisplayName("Authorization without xcsrf-token")
     void noXcsrfAuth() {
         Map<String, String> preAuthCookies =
                 given()
-                        .spec(basicRequest)
+                        .spec(cookiesRequest)
                         .when()
                         .get(loginUrl)
                         .then()
                         .log().all()
                         .extract().cookies();
 
-        given()
+        step("Send body with correct auth but without xcsrf header", () ->
+                given()
                 .spec(basicRequest)
                 .body(authBody)
                 .cookies(preAuthCookies)
@@ -59,15 +68,18 @@ public class ApiStepikTests extends TestBase {
                 .then()
                 .log().all()
                 .spec(noAuthResponse)
-                .body(containsString(noXcsrfText));
+                .body(containsString(noXcsrfText)));
     }
 
     @Test
-    @DisplayName("Enroll in course")
+    @Feature("API")
+    @DisplayName("Enrollment in course")
     void enrollInCourse() {
+        String enrollBody = "{\"enrollment\":{\"course\":\"63054\"}}";
+
         given()
                 .spec(basicRequest)
-                .body("{\"enrollment\":{\"course\":\"63054\"}}")
+                .body(enrollBody)
                 .cookies(AuthCookies.postAuth)
                 .header("x-csrftoken", AuthCookies.postAuth.get("csrftoken"))
                 .when()
@@ -78,6 +90,7 @@ public class ApiStepikTests extends TestBase {
     }
 
     @Test
+    @Feature("API")
     @DisplayName("Enrolled course is in user course list")
     void checkActiveCourses() {
 
@@ -94,19 +107,24 @@ public class ApiStepikTests extends TestBase {
     }
 
     @Test
-    @DisplayName("Enroll and leave course")
+    @Feature("API")
+    @DisplayName("Enrollment and deleting enrolled course")
     void leaveCourse() {
+        String enrollBody = "{\"enrollment\":{\"course\":\"63054\"}}";
+
+        step("Send enrollment body with authorized user cookies", () ->
         given()
                 .spec(basicRequest)
-                .body("{\"enrollment\":{\"course\":\"63054\"}}")
+                .body(enrollBody)
                 .cookies(AuthCookies.postAuth)
                 .header("x-csrftoken", AuthCookies.postAuth.get("csrftoken"))
                 .when()
                 .post(enrolUrl)
                 .then()
                 .spec(createdResponse)
-                .log().all();
+                .log().all());
 
+        step("Delete by enrollment body with authorized user cookies", () ->
         given()
                 .spec(basicRequest)
                 .when()
@@ -115,7 +133,7 @@ public class ApiStepikTests extends TestBase {
                 .delete(enrolUrl + "/" + sqlCourseId)
                 .then()
                 .spec(noContentResponse)
-                .log().all();
+                .log().all());
     }
 }
 

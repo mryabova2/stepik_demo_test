@@ -12,6 +12,11 @@ public class Catalog {
         return this;
     }
 
+    public Catalog gotoCatalog(){
+        $("[data-navbar-item=catalog]").click();
+        return this;
+    }
+
     public Catalog setSearchValue(String value){
         $(".search-form__input").setValue(value).pressEnter();
         return this;
