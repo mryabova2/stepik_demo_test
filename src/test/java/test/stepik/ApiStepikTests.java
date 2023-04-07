@@ -34,7 +34,7 @@ public class ApiStepikTests extends TestBase {
 
         step("Send body with correct cookies and wrong password", () ->    given()
                 .spec(basicRequest)
-                .body(Map.of("email", config.getEmail(), "password", wrongPassword))
+                .body(Map.of("email", configAuth.getEmail(), "password", wrongPassword))
                 .cookies(preAuthCookies)
                 .header("x-csrftoken", preAuthCookies.get("csrftoken"))
                 .when()
