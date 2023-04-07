@@ -30,6 +30,4 @@ public class AuthCookies extends TestBase {
                     .log().all()
                     .spec(noContentResponse)
                     .extract().cookies();
-
-
 }

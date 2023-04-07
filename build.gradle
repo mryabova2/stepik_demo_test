@@ -7,7 +7,7 @@ repositories {
     mavenCentral()
 }
 
-def allureVersion = '2.21.0',
+def allureVersion = '2.19.0',
     selenideVersion = '6.12.3'
 //    junitVersion = "5.8.2",
 //    slf4jVersion = "2.0.6"
@@ -15,6 +15,7 @@ def allureVersion = '2.21.0',
 allure {
     report {
         version.set(allureVersion)
+        reportDir.set(project.reporting.baseDirectory.dir("allure-report"))
     }
     adapter {
         aspectjWeaver.set(true)
@@ -48,11 +49,4 @@ tasks.withType(JavaCompile) {
 tasks.withType(Test) {
     systemProperties(System.getProperties())
     useJUnitPlatform()
-
-    testLogging {
-        lifecycle {
-            events "started", "skipped", "failed", "standard_error", "standard_out"
-            exceptionFormat "short"
-        }
-    }
 }

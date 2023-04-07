@@ -1,0 +1,17 @@
+{
+  "base": {
+    "logo": "",
+    "project": "Stepik_demo_test",
+    "environment": "",
+    "comment": "Test Results",
+    "reportLink": "",
+    "language": "en",
+    "allureFolder": "build/reports/allure-report/allureReport/",
+    "enableChart": true
+  },
+  "telegram": {
+    "token": "5395699584:AAFvnPepzikoRGGJVwdTq6ykwTsdztply5Q",
+    "chat": "-1001765182316",
+    "replyTo": ""
+  }
+}
