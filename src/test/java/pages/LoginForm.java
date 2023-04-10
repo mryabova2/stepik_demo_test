@@ -1,7 +1,9 @@
 package pages;
 
+import com.codeborne.selenide.Condition;
 import test.stepik.TestBase;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 
@@ -26,6 +28,11 @@ public class LoginForm extends TestBase {
 
      public LoginForm submitLoginForm (){
           $("[type=submit]").click();
+          return this;
+     }
+
+     public LoginForm checkClosed (){
+          $(".auth-widget").shouldBe(Condition.not(visible));
           return this;
      }
 

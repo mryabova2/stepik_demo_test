@@ -7,15 +7,14 @@ repositories {
     mavenCentral()
 }
 
-def allureVersion = '2.19.0',
+def allureVersion = '2.21.0',
     selenideVersion = '6.12.3'
-//    junitVersion = "5.8.2",
-//    slf4jVersion = "2.0.6"
+
 
 allure {
     report {
         version.set(allureVersion)
-        reportDir.set(project.reporting.baseDirectory.dir("allure-report"))
+        reportDir.set(project.reporting.baseDirectory.dir("allure-results"))
     }
     adapter {
         aspectjWeaver.set(true)

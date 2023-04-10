@@ -1,13 +1,11 @@
 package test.stepik;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.Catalog;
-import pages.ProfileInfo;
-import pages.ProfileMenu;
-import pages.LoginForm;
+import pages.*;
 
 import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.Condition.*;
@@ -20,8 +18,11 @@ public class UiStepikTests extends UiTestBase {
     ProfileInfo profileInfo = new ProfileInfo();
     ProfileMenu profileMenu = new ProfileMenu();
     Catalog catalog = new Catalog();
+    MainNavigationBar navigationBar = new MainNavigationBar();
+    Wishlist wishlist = new Wishlist();
 
     @Test
+    @Epic("UI")
     @Feature("Search")
     @DisplayName("Search course by key word and check output")
     void simpleSearchTest() {
@@ -31,7 +32,8 @@ public class UiStepikTests extends UiTestBase {
                 catalog.openCatalog());
 
         step("Input search key-word", () ->
-                catalog.setSearchValue("Java"));
+                catalog.setSearchValue("Java")
+                        .submitSearch());
 
         step("Every course found contains key word", () -> {
             int totalCoursesFound = $$(Catalog.coursesFound).size();
@@ -40,6 +42,7 @@ public class UiStepikTests extends UiTestBase {
     }
 
     @Test
+    @Epic("UI")
     @Feature("Profile info")
     @DisplayName("Change user-profile info")
     void changeProfileInfo() {
@@ -68,13 +71,75 @@ public class UiStepikTests extends UiTestBase {
         });
 
         step("Confirm updated information", () -> {
-                    profileMenu.goToProfile();
-                    profileInfo.confirmChanges();
-                    profileMenu.goToProfile();
-                });
+            profileMenu.goToProfile();
+            profileInfo.confirmChanges();
+            profileMenu.goToProfile();
+        });
         step("Profile header is updated", () -> (
                 $(ProfileMenu.profileHeader).shouldHave(text(firstName + " " + lastName)))
         );
     }
+
+    @Test
+    @Epic("UI")
+    @Feature("Search")
+    @DisplayName("Search course with filter Free")
+    void filterSearch() {
+        step("Open courses catalog", () ->
+                catalog.openCatalog());
+
+        step("Input search key-word", () ->
+                catalog.setSearchValue("Java"));
+
+        step("Set filter Free of charge", () ->
+                catalog.freeCheck()
+                        .submitSearch());
+        step("Every course found is free of charge", () -> {
+            int totalCoursesFound = $$(Catalog.coursesFound).size();
+            $$(Catalog.coursesFound).filterBy(text("Бесплатно")).shouldHave(size(totalCoursesFound));
+        });
+    }
+
+    @Test
+    @Epic("UI")
+    @Feature("Search")
+    @DisplayName("Add in wishlist and delete")
+    void addInWishlist() {
+
+        String courseName = "Python: разработка с нуля";
+        Allure.parameter("Coerse name", courseName);
+
+        step("Login with existing user", () -> {
+            loginForm
+                    .openLoginMenu()
+                    .setEmail(authBody.get("email"))
+                    .setPassword(authBody.get("password"))
+                    .submitLoginForm()
+                    .checkClosed();
+        });
+
+        step("Search course name", () ->
+                catalog.setSearchValue(courseName)
+                        .submitSearch());
+
+        step("Mark course with like", () -> {
+            catalog.checkLoaded();
+            $(Catalog.favoriteCorseMark).click();
+        });
+
+        step("Marked course is listed in Wishlist", () -> {
+            navigationBar.goToLearning();
+            wishlist.goToWishList();
+            $(Catalog.courseTitle).shouldHave(text(courseName));
+        });
+
+        step("Remove added course from Wishlist and confirm", () -> {
+                    wishlist.courseMoreInfo()
+                            .removeFromWishlist()
+                            .confirmChanges()
+                            .checkConfirmed();
+        });
+    }
 }
+
 

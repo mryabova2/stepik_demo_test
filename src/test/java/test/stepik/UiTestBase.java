@@ -1,7 +1,7 @@
 package test.stepik;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -30,13 +30,15 @@ public class UiTestBase extends TestBase{
     @AfterAll
     static void tearDown() {
         SelenideLogger.removeListener("allure");
-        WebDriverRunner.closeWebDriver();
+
     }
+
 
     @AfterEach
     void addAttachements(){
         pageSource("Final Page Source");
         screenshotAs("Final Screenshot");
+        Selenide.closeWebDriver();
     }
 
     @Attachment(value = "{attachName}", type = "text/plain")

@@ -1,6 +1,7 @@
 package test.stepik;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,8 @@ public class ApiStepikTests extends TestBase {
 
 
     @Test
-    @Feature("API")
+    @Epic("API")
+    @Feature("Log in")
     @DisplayName("Authorization with wrong password")
     void wrongPasswordAuth() {
         String wrongPassword = "12345";
@@ -46,7 +48,8 @@ public class ApiStepikTests extends TestBase {
     }
 
     @Test
-    @Feature("API")
+    @Epic("API")
+    @Feature("Log in")
     @DisplayName("Authorization without xcsrf-token")
     void noXcsrfAuth() {
         Map<String, String> preAuthCookies =
@@ -72,7 +75,8 @@ public class ApiStepikTests extends TestBase {
     }
 
     @Test
-    @Feature("API")
+    @Epic("API")
+    @Feature("Enrollment")
     @DisplayName("Enrollment in course")
     void enrollInCourse() {
         String enrollBody = "{\"enrollment\":{\"course\":\"63054\"}}";
@@ -90,7 +94,8 @@ public class ApiStepikTests extends TestBase {
     }
 
     @Test
-    @Feature("API")
+    @Epic("API")
+    @Feature("Enrollment")
     @DisplayName("Enrolled course is in user course list")
     void checkActiveCourses() {
 
@@ -107,7 +112,8 @@ public class ApiStepikTests extends TestBase {
     }
 
     @Test
-    @Feature("API")
+    @Epic("API")
+    @Feature("Drop course")
     @DisplayName("Enrollment and deleting enrolled course")
     void leaveCourse() {
         String enrollBody = "{\"enrollment\":{\"course\":\"63054\"}}";
