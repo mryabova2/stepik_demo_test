@@ -1,8 +1,9 @@
-package test.stepik;
+package api;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import test.stepik.TestBase;
 
 import static helpers.ApiListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;

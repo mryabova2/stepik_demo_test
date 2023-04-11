@@ -21,7 +21,7 @@ public class ProfileInfo extends TestBase {
     }
 
     public ProfileInfo setLanguage(String value) {
-        $("#supported_languages").selectOption("English");
+        $("#supported_languages").selectOption(value);
         return this;
     }
 

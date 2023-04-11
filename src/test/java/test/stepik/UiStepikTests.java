@@ -1,6 +1,7 @@
 package test.stepik;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
@@ -24,12 +25,13 @@ public class UiStepikTests extends UiTestBase {
     @Test
     @Epic("UI")
     @Feature("Search")
+    @AllureId("17196")
     @DisplayName("Search course by key word and check output")
     void simpleSearchTest() {
         Allure.parameter("Key Word", "Java");
 
         step("Open courses catalog", () ->
-                catalog.openCatalog());
+                catalog.openMainPage());
 
         step("Input search key-word", () ->
                 catalog.setSearchValue("Java")
@@ -44,6 +46,7 @@ public class UiStepikTests extends UiTestBase {
     @Test
     @Epic("UI")
     @Feature("Profile info")
+    @AllureId("17197")
     @DisplayName("Change user-profile info")
     void changeProfileInfo() {
         Allure.parameter("Name", firstName);
@@ -83,10 +86,11 @@ public class UiStepikTests extends UiTestBase {
     @Test
     @Epic("UI")
     @Feature("Search")
+    @AllureId("17198")
     @DisplayName("Search course with filter Free")
     void filterSearch() {
         step("Open courses catalog", () ->
-                catalog.openCatalog());
+                catalog.openMainPage());
 
         step("Input search key-word", () ->
                 catalog.setSearchValue("Java"));
@@ -103,6 +107,7 @@ public class UiStepikTests extends UiTestBase {
     @Test
     @Epic("UI")
     @Feature("Search")
+    @AllureId("17195")
     @DisplayName("Add in wishlist and delete")
     void addInWishlist() {
 
@@ -134,10 +139,10 @@ public class UiStepikTests extends UiTestBase {
         });
 
         step("Remove added course from Wishlist and confirm", () -> {
-                    wishlist.courseMoreInfo()
-                            .removeFromWishlist()
-                            .confirmChanges()
-                            .checkConfirmed();
+            wishlist.courseMoreInfo()
+                    .removeFromWishlist()
+                    .confirmChanges()
+                    .checkConfirmed();
         });
     }
 }

@@ -1,14 +1,15 @@
-package test.stepik;
+package api;
 
+import test.stepik.TestBase;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static test.stepik.ApiSpecs.*;
+import static api.ApiSpecs.*;
 
 public class AuthCookies extends TestBase {
 
 // gets csrf-token and session-id before authorization
-    static Map<String, String> preAuth =
+    public static Map<String, String> preAuth =
             given()
                     .spec(cookiesRequest)
                     .when()
@@ -18,7 +19,7 @@ public class AuthCookies extends TestBase {
                     .extract().cookies();
 
 // gets csrf-token and session-id after authorization
-    static Map<String, String> postAuth =
+    public static Map<String, String> postAuth =
             given()
                     .spec(cookiesRequest)
                     .body(authBody)
