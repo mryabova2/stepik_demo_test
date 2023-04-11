@@ -1,5 +1,6 @@
 package test.stepik;
 
+import attach.AllureAttach;
 import io.qameta.allure.Allure;
 import io.qameta.allure.AllureId;
 import io.qameta.allure.Epic;
@@ -70,7 +71,7 @@ public class UiStepikTests extends UiTestBase {
                     .setFirstName(firstName)
                     .setLastName(lastName)
                     .setLanguage(getRandomLanguage());
-            screenshotAs("Filled in profile info");
+            AllureAttach.screenshotAs("Filled in profile info");
         });
 
         step("Confirm updated information", () -> {

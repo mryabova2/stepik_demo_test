@@ -1,21 +1,30 @@
 package test.stepik;
 
+import attach.AllureAttach;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import io.qameta.allure.Attachment;
+import config.WebDriverConfig;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.nio.charset.StandardCharsets;
+public class UiTestBase extends TestBase {
 
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-
-public class UiTestBase extends TestBase{
+    @BeforeAll
+    static void setLaunchProperties() {
+        System.setProperty("launchType", "remote");
+        WebDriverConfig config = ConfigFactory.create(WebDriverConfig.class, ConfigFactory.getProperties());
+        Configuration.browser = config.getBrowser();
+        Configuration.browserSize = config.getBrowserSize();
+        Configuration.timeout = 10000;
+        if ((config.getLaunchType()).equals("remote")) {
+            Configuration.remote = config.getRemoteUrl();
+        }
+    }
 
     @BeforeAll
     static void configBaseUrl() {
@@ -25,35 +34,22 @@ public class UiTestBase extends TestBase{
     @BeforeAll
     static void configAllureUi() {
         SelenideLogger.addListener("allure", new AllureSelenide());
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", true);
+        Configuration.browserCapabilities = capabilities;
     }
 
     @AfterAll
     static void tearDown() {
         SelenideLogger.removeListener("allure");
-
     }
-
 
     @AfterEach
-    void addAttachements(){
-        pageSource("Final Page Source");
-        screenshotAs("Final Screenshot");
+    void addAttachments() {
+        AllureAttach.pageSource("Final Page Source");
+        AllureAttach.screenshotAs("Final Screenshot");
+        AllureAttach.addVideo();
         Selenide.closeWebDriver();
     }
-
-    @Attachment(value = "{attachName}", type = "text/plain")
-    public static String AttachAsText(String attachName, String message) {
-        return message;
-    }
-
-    @Attachment(value = "{attachName}", type = "text/html")
-    public byte[] pageSource(String attachName) {
-        return getWebDriver().getPageSource().getBytes(StandardCharsets.UTF_8);
-    }
-
-    @Attachment(value = "{attachName}", type = "image/png", fileExtension = "png")
-    public static byte[] screenshotAs(String attachName) {
-        return (((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.BYTES));
-    }
-
 }
