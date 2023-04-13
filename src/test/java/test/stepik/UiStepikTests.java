@@ -35,8 +35,7 @@ public class UiStepikTests extends UiTestBase {
                 catalog.openMainPage());
 
         step("Input search key-word", () ->
-                catalog.checkLoaded()
-                        .setSearchValue("Java")
+                catalog.setSearchValue("Java")
                         .submitSearch());
 
         step("Every course found contains key word", () -> {
@@ -114,7 +113,7 @@ public class UiStepikTests extends UiTestBase {
     void addInWishlist() {
 
         String courseName = "Python: разработка с нуля";
-        Allure.parameter("Coerse name", courseName);
+        Allure.parameter("Course name", courseName);
 
         step("Login with existing user", () -> {
             loginForm

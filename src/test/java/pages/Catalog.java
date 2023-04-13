@@ -16,9 +16,8 @@ public class Catalog {
         return this;
     }
 
-
     public Catalog setSearchValue(String value){
-        $(".search-form__input").setValue(value);
+        $(".search-form__input").shouldBe(visible).setValue(value);
         return this;
     }
 
