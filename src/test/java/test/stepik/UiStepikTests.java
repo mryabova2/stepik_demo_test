@@ -35,8 +35,8 @@ public class UiStepikTests extends UiTestBase {
                 catalog.openMainPage());
 
         step("Input search key-word", () ->
-                catalog.setSearchValue("Java")
-                        .checkLoaded()
+                catalog.checkLoaded()
+                        .setSearchValue("Java")
                         .submitSearch());
 
         step("Every course found contains key word", () -> {
