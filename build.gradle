@@ -14,7 +14,6 @@ def allureVersion = '2.21.0',
 allure {
     report {
         version.set(allureVersion)
-        reportDir.set(project.reporting.baseDirectory.dir("allure-results"))
     }
     adapter {
         aspectjWeaver.set(true)

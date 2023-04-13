@@ -3,7 +3,6 @@ package pages;
 import test.stepik.TestBase;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class ProfileInfo extends TestBase {
@@ -25,11 +24,7 @@ public class ProfileInfo extends TestBase {
 
     public ProfileInfo confirmChanges() {
         $(" .modal-dialog-confirm__buttons").shouldBe(visible);
-        if ($(" .modal-dialog-confirm__buttons").$(byText("Сохранить")).is(visible)) {
-            $(" .modal-dialog-confirm__buttons").$(byText("Сохранить")).click();
-        } else {
-            $(" .modal-dialog-confirm__buttons").$(byText("Save")).click();
-        }
+        $(" .modal-dialog-confirm__buttons [type=button]").click();
         return this;
     }
 }
