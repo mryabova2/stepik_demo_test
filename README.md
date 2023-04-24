@@ -49,17 +49,17 @@
 <h4>How it works</h4>
 <p><img src="icons/Schemedark.png" height="600"/> </p>
 
-<h4>How to launch</h4>
-<h3>Jenkins
+<h3>How to launch</h3>
+<h4>Jenkins
 <a href="https://www.jenkins.io/"><img src="icons/Jenkins.svg" height="50" alt="Jenkins" title="Jenkins" align="center"/></a></h3>
 Configured jenkins job is<a href="https://jenkins.autotests.cloud/job/012-mv_ry-demo_test/"> here</a>
 <p>1. Choose "Parametrized build"<br>
-<img src="icons/Jenkins build.jpg"/><br>
-2. Select parameters (browser and window size)
-<img src="icons/Parameters choiсe.jpg"/><br>
+<br><img src="icons/Jenkins build.jpg"/><br><br>
+2. Select parameters (browser and window size)<br>
+<br><img src="icons/Parameters choiсe.jpg"/><br>
 </p>
 
-<h3>Local launch</h3>
+<h4>Local launch</h4>
 For local launch through terminal, please, insert command:
 ```
 gradle clean test
@@ -69,28 +69,29 @@ gradle clean test
 <h3>Using Allure TestOps <a href="https://qameta.io/"><img src="icons/Allure_TO.svg" height="40" alt="Allure TestOps" title="Allure TestOps" align="center"/></a></h3>
 Allure TestOps Project is <a href="https://allure.autotests.cloud/project/2162/test-cases/"> here</a>
 <p>In "Test Cases" select tests and click "Run"<br>
-<img src="icons/TestOps run.jpg"/><br>
-TestOps starts Jenkins build. It is possible to observe build in progress. Test cases are renewed automatically if any changes happened
+<br><img src="icons/TestOps run.jpg"/><br>
+<br>TestOps starts Jenkins build. It is possible to observe build in progress. Test cases are renewed automatically if any changes happened
 </p>
 
 <h4><img src="icons/bar-chart.png" height="20" align="center"/>  Enjoy reports</h4>
 <p> 
-Overall Allure Report <img src="icons/Allure Report common.jpg"><br>
+Overall Allure Report <br>
+<br><img src="icons/Allure Report common.jpg"><br>
 <h4>For UI Tests</h4>
 <p>
 Outlining failing steps<br>
-<img src="icons/ReportWithFailure.jpg"><br>
-Showing tests in progress<br>
-<img src="icons/Testvideo.gif">
+<br><img src="icons/ReportWithFailure.jpg"><br>
+<br>Showing tests in progress<br>
+<br><img src="icons/Testvideo.gif">
 </p>
 <h4>For API Tests</h4>
 <p>
 Representing requests and responses with body and headers<br>
-<img src="icons/ReportAPI.jpg">
+<br><img src="icons/ReportAPI.jpg">
 </p>
 <h4>Telegram notifications <a href="https://github.com/qa-guru/allure-notifications"><img src="icons/telegram-color.svg" height="20" alt="Telegram Notifications" title="Telegram Notifications" align="center"/></a><br></h4>
 <p>After building in Jenkins, Telegram notification with results is sent by Telegram bot<br>
-<img src="icons/TelegramReport.jpg"></p>
+<br><img src="icons/TelegramReport.jpg"></p>
 
 
 
