@@ -1,38 +1,48 @@
 package pages;
 
+import com.codeborne.selenide.SelenideElement;
+
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class Catalog {
 
-//elements
-    public static String coursesFound = "[data-view=search-item]";
-    public static String favoriteCorseMark = " .favorite-outline_icon";
-    public static String courseTitle = " .learn-course-tile";
+    //elements
+    public SelenideElement courseTitle = $(" .learn-course-tile");
+    public SelenideElement favoriteCourseMark = $(" .favorite-outline_icon");
 
-//actions
-    public Catalog openMainPage(){
+    //actions
+    public Catalog openMainPage() {
         open("");
         return this;
     }
 
-    public Catalog setSearchValue(String value){
+    public Catalog setSearchValue(String value) {
         $(".search-form__input").shouldBe(visible).setValue(value);
         return this;
     }
 
-    public Catalog submitSearch(){
+    public Catalog submitSearch() {
         $(" .search-form__submit").click();
         return this;
     }
 
-    public Catalog freeCheck(){
+    public Catalog selectFilterFree() {
         $$(".form-checkbox").last().click();
         return this;
     }
 
-    public Catalog checkLoaded (){
-        $(coursesFound).shouldBe(visible);
+    public Catalog checkLoaded() {
+        $("[data-view=search-item]").shouldBe(visible);
         return this;
+    }
+
+    public int countCoursesFound() {
+        return $$("[data-view=search-item]").size();
+    }
+
+    public int filterCoursesFound(String keyWord) {
+       return $$("[data-view=search-item]").filterBy(text(keyWord)).size();
     }
 }

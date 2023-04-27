@@ -7,21 +7,12 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.*;
 
-import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UiStepikTests extends UiTestBase {
-
-    LoginForm loginForm = new LoginForm();
-    ProfileInfo profileInfo = new ProfileInfo();
-    ProfileMenu profileMenu = new ProfileMenu();
-    Catalog catalog = new Catalog();
-    MainNavigationBar navigationBar = new MainNavigationBar();
-    Wishlist wishlist = new Wishlist();
 
     @Test
     @Epic("UI")
@@ -29,18 +20,18 @@ public class UiStepikTests extends UiTestBase {
     @AllureId("17196")
     @DisplayName("Search course by key word and check output")
     void simpleSearchTest() {
-        Allure.parameter("Key Word", "Java");
+        String keyWord = "Java";
+        Allure.parameter("Key Word", keyWord);
 
         step("Open courses catalog", () ->
                 catalog.openMainPage());
 
         step("Input search key-word", () ->
-                catalog.setSearchValue("Java")
+                catalog.setSearchValue(keyWord)
                         .submitSearch());
 
         step("Every course found contains key word", () -> {
-            int totalCoursesFound = $$(Catalog.coursesFound).size();
-            $$(Catalog.coursesFound).filterBy(text("Java")).shouldHave(size(totalCoursesFound));
+            assertEquals(catalog.filterCoursesFound(keyWord), catalog.countCoursesFound());
         });
     }
 
@@ -56,21 +47,17 @@ public class UiStepikTests extends UiTestBase {
 
         step("Login with existing user", () -> {
             loginForm
-                    .openLoginMenu()
-                    .setEmail(authBody.get("email"))
-                    .setPassword(authBody.get("password"))
-                    .submitLoginForm();
+                    .fillAuthInfo(authEmail, authPassword)
+                    .checkClosed();
         });
 
-        step("Go to profile info blank", () -> {
+        step("Go to profile settings", () -> {
             profileMenu.goToSettings();
         });
 
         step("Input random name, last name, language", () -> {
             profileInfo
-                    .setFirstName(firstName)
-                    .setLastName(lastName)
-                    .setLanguage(getRandomLanguage());
+                    .setRandomUserInfo(firstName, lastName, getRandomLanguage());
             AllureAttach.screenshotAs("Filled in profile info");
         });
 
@@ -79,8 +66,9 @@ public class UiStepikTests extends UiTestBase {
             profileInfo.confirmChanges();
             profileMenu.goToProfile();
         });
+
         step("Profile header is updated", () -> (
-                $(ProfileMenu.profileHeader).shouldHave(text(firstName + " " + lastName)))
+                profileMenu.profileHeader.shouldHave(text(firstName + " " + lastName)))
         );
     }
 
@@ -97,11 +85,11 @@ public class UiStepikTests extends UiTestBase {
                 catalog.setSearchValue("Java"));
 
         step("Set filter Free of charge", () ->
-                catalog.freeCheck()
+                catalog.selectFilterFree()
                         .submitSearch());
+
         step("Every course found is free of charge", () -> {
-            int totalCoursesFound = $$(Catalog.coursesFound).size();
-            $$(Catalog.coursesFound).filterBy(text("Бесплатно")).shouldHave(size(totalCoursesFound));
+            assertEquals(catalog.filterCoursesFound("Бесплатно"), catalog.countCoursesFound());
         });
     }
 
@@ -117,10 +105,7 @@ public class UiStepikTests extends UiTestBase {
 
         step("Login with existing user", () -> {
             loginForm
-                    .openLoginMenu()
-                    .setEmail(authBody.get("email"))
-                    .setPassword(authBody.get("password"))
-                    .submitLoginForm()
+                    .fillAuthInfo(authEmail, authPassword)
                     .checkClosed();
         });
 
@@ -130,13 +115,13 @@ public class UiStepikTests extends UiTestBase {
 
         step("Mark course with like", () -> {
             catalog.checkLoaded();
-            $(Catalog.favoriteCorseMark).click();
+            catalog.favoriteCourseMark.click();
         });
 
         step("Marked course is listed in Wishlist", () -> {
             navigationBar.goToLearning();
             wishlist.goToWishList();
-            $(Catalog.courseTitle).shouldHave(text(courseName));
+            catalog.courseTitle.shouldHave(text(courseName));
         });
 
         step("Remove added course from Wishlist and confirm", () -> {
@@ -147,5 +132,3 @@ public class UiStepikTests extends UiTestBase {
         });
     }
 }
-
-

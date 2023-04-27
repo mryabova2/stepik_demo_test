@@ -7,18 +7,10 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class ProfileInfo extends TestBase {
 
-    public ProfileInfo setFirstName(String value) {
-        $("#first_name").setValue(value);
-        return this;
-    }
-
-    public ProfileInfo setLastName(String value) {
-        $("#last_name").setValue(value);
-        return this;
-    }
-
-    public ProfileInfo setLanguage(String value) {
-        $("#supported_languages").selectOption(value);
+    public ProfileInfo setRandomUserInfo(String firstName, String lastName, String language) {
+        $("#first_name").setValue(firstName);
+        $("#last_name").setValue(lastName);
+        $("#supported_languages").selectOption(language);
         return this;
     }
 

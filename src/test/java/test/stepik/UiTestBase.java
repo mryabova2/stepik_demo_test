@@ -11,8 +11,16 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import pages.*;
 
 public class UiTestBase extends TestBase {
+
+    LoginForm loginForm = new LoginForm();
+    ProfileInfo profileInfo = new ProfileInfo();
+    ProfileMenu profileMenu = new ProfileMenu();
+    Catalog catalog = new Catalog();
+    MainNavigationBar navigationBar = new MainNavigationBar();
+    Wishlist wishlist = new Wishlist();
 
     @BeforeAll
     static void setLaunchProperties() {

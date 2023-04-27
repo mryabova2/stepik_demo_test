@@ -18,6 +18,8 @@ public class TestBase {
             coursesUrl = configUrl.getCoursesUrl();
 
     protected static Map<String, String> authBody = Map.of("email", configAuth.getEmail(), "password", configAuth.getPassword());
+    static String authEmail = authBody.get("email"),
+            authPassword = authBody.get("password");
 
     int javaCourseId = 187,
             sqlCourseId = 63054;
